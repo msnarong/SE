@@ -39,9 +39,9 @@ void doTask()
       {
         switch(menu_level_2)
         {
-          case 1:   // "1.1. 회원가입" 메뉴 부분
+          case 1:   // 1.1. 회원가입
           {
-            addMember();
+            SignUp signUp; // control class 생성
             break;
           }
           case 2:   // 1.2. 회원탈퇴
@@ -90,6 +90,7 @@ void doTask()
         {
           case 1: // 4.1. 상품 정보 검색'
           {
+            SearchProduct SearchProduct1;
             break;
           }
           case 2: // 4.2. 상품 구매

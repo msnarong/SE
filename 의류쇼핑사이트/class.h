@@ -16,6 +16,8 @@ using namespace std;
 
 Member* memberList[MAX_MEMBER_NUM];
 Member* currentUser;
+Product* currentProduct = NULL; // 회원 상품 정보 검색한 상품
+ProductList* allProduct;
 
 class Member {
   private:
@@ -42,18 +44,11 @@ class Member {
     Member(string, int, string, string); // 생성자
     //void addMember(Member);
     bool checkIDandPW(string, string); // 로그인 (id, pw)
-    //void deleteMem(Member);          // 회원탈퇴 
-    void LogoutUser();              // 로그아웃
+    string deleteMem();          // 회원탈퇴 
+    string logoutUser();              // 로그아웃
     BuyProductList* getBuyList();   // 구매목록 
     SellProductList* getSellList(); // 판매목록
     
-};
-
-class ProductList {
-  private:
-    Product* productList[MAX_PRODUCT_NUM];
-  public:
-    void searchProduct(string);
 };
 
 class Product {
@@ -68,32 +63,50 @@ class Product {
     string sellerID;
   public:
     Product(string, string, int, int); // 생성자
-    void getProductDetails();   // 물품 상세 정보 출력
+    int getProductStock();
+    Product* getProductDetails();   // 물품 상세 정보 출력
     //void createNewProduct();    // 새 물품추가 # 생성자로 대신 
     void addBuyScore(double);   // 물품 평가 (평점)
     void buyProduct(int);       // 물품 구매 (구매 수량)
     int getIncome();            // 물품 총판매금액 반환 
     double getScore();          // 물품 평점 반환 
+    string getProductName(); // 상품명 반환
+    strint getProductCompany();
+    
 };
 
-class BuyProductList {
+class ProductList {
   private:
     Product* productList[MAX_PRODUCT_NUM];
   public:
-    void addBuyProduct(string, int);    // 물품 구매
-    void showBuyProductList();  // 구매 목록 출력
-    void evaluateProduct(int);  // 물품 평가
+    Product* searchProduct(string);
 };
 
 class SellProductList {
   private:
     Product* productList[MAX_PRODUCT_NUM];
+    int sellCount = 0;
   public:
+    SellProductList();
     void showSoldProduct();     // 판매 완료 목록 출력
-    int getTotalIncome();       // 총 판매액 출력
-    double getScoreAvg();       // 평균 구매만족도 출력
-    void showSellProductList(); // 판매 물품 목록 출력
-    void addSellProduct();       // 판매 물품 등록(이름변경!)
+    //int getTotalIncome();       // 총 판매액 출력
+    //double getScoreAvg();       // 평균 구매만족도 출력
+    Product* showSellProductList(int index); // 판매 물품 목록 출력
+    void addNewProduct(string, string, int, int);       // 판매 물품 등록
+    int getSellCount(); // sellCount return
+    void showProductStatistics();
+};
+
+class BuyProductList {
+  private:
+    Product* productList[MAX_PRODUCT_NUM];
+    int buyCount = 0;
+  public:
+    BuyProductList();
+    void addBuyProduct(string, int);    // 물품 구매
+    void showBuyProductList();  // 구매 목록 출력
+    void evaluateProduct(string, int);  // 물품 평가
+    Product* findProduct(string); // 이름으로 구매한 물품 찾기
 };
 
 #endif
