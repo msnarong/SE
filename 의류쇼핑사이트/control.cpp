@@ -102,6 +102,11 @@ CheckSoldProduct::CheckSoldProduct()
   checkSoldProductUI.startInterface(this);
 }
 
+SellProductList* CheckSoldProduct::showSoldProduct()
+{
+  return (currentUser->getSellList());
+}
+
 // 4.1 상품 정보 검색
 SearchProduct::SearchProduct()
 {
@@ -111,16 +116,53 @@ SearchProduct::SearchProduct()
 
 Product* SearchProduct::searchProduct(string productName)
 {
-  return allProduct->searchProduct(productName);
+  currentProduct = &(allProduct->searchProduct(productName));
+  return currentProduct;
 };
 
-BuyList::BuyList()
+// 4.2 상품 구매
+BuyProduct::BuyProduct()
 {
-  BuyList* pBuyList;
-  BuyListUI BuyListUI1(pBuyList);
+  BuyProductUI buyProductUI;
+  buyProductUI.startInterface(this);
 }
 
-void BuyList::printBuyList()
+void BuyProduct::buyProduct()
 {
-  currentUser->getBuyList()->showBuyProductList();
+  currentProduct->buyProduct();
+}
+
+// 4.3 상품 구매 내역 조회
+BuyList::BuyList()
+{
+  BuyListUI buyListUI;
+  buyListUI.startInterface(this);
+}
+
+BuyProductList* BuyList::printBuyList()
+{
+  return (currentUser->getBuyList());
+}
+
+// 4.4. 상품 구매만족도 평가
+Evaluate::Evaluate()
+{
+   EvaluateUI evaluateUI;
+   evaluateUI.startInterface(this);
+}
+string Evaluate::evaluateProduct(string productName, double productScore)
+{
+    BuyProductList* userBuyProductList = currentUser->getBuyList(); // 구매 목록 포인터 받아오기
+    return userBuyProductList->evaluateProduct(productName, productScore);  // 상품 평가 후 판매자ID 반환
+}
+
+// 5.1. 판매 상품 통계
+ShowStats::ShowStats()
+{
+    ShowStatsUI showstatsUI;
+    showstatsUI.startInterface(this);
+}
+SellProductList* ShowStats::printStats()
+{
+    return currentUser->getSellList();  // 판매 목록 포인터 반환
 }

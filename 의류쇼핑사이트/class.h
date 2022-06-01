@@ -66,13 +66,16 @@ class Product {
     int getProductStock();
     Product* getProductDetails();   // 물품 상세 정보 출력
     //void createNewProduct();    // 새 물품추가 # 생성자로 대신 
-    void addBuyScore(double);   // 물품 평가 (평점)
-    void buyProduct(int);       // 물품 구매 (구매 수량)
+    string addBuyScore(double);   // 물품 평가 (평점) 판매자명 반환
+    void buyProduct();       // 물품 구매 (구매 수량)
     int getIncome();            // 물품 총판매금액 반환 
-    double getScore();          // 물품 평점 반환 
+    double getProductScore();          // 물품 평점 반환 
     string getProductName(); // 상품명 반환
-    strint getProductCompany();
-    
+    string getProductCompany();
+    int getProductPrice();
+    int getProductSold();
+    string getSellerID();
+
 };
 
 class ProductList {
@@ -88,13 +91,13 @@ class SellProductList {
     int sellCount = 0;
   public:
     SellProductList();
-    void showSoldProduct();     // 판매 완료 목록 출력
+    Product* showSoldProduct(int index);     // 판매 완료 목록 출력
     //int getTotalIncome();       // 총 판매액 출력
     //double getScoreAvg();       // 평균 구매만족도 출력
     Product* showSellProductList(int index); // 판매 물품 목록 출력
     void addNewProduct(string, string, int, int);       // 판매 물품 등록
     int getSellCount(); // sellCount return
-    void showProductStatistics();
+    string showProductStatistics(int index);
 };
 
 class BuyProductList {
@@ -103,10 +106,11 @@ class BuyProductList {
     int buyCount = 0;
   public:
     BuyProductList();
-    void addBuyProduct(string, int);    // 물품 구매
-    void showBuyProductList();  // 구매 목록 출력
-    void evaluateProduct(string, int);  // 물품 평가
+    void addBuyProduct();    // 물품 구매
+    Product* showBuyProductList(int index);  // 구매 목록 출력
+    string evaluateProduct(string, int);  // 물품 평가
     Product* findProduct(string); // 이름으로 구매한 물품 찾기
+    int getBuyCount();
 };
 
 #endif

@@ -47,6 +47,7 @@ class CheckSellProduct {
 class CheckSoldProduct {
   public:
     CheckSoldProduct(); // 생성자
+    SellProductList* showSoldProduct();
 };
 
 // 4.1 상품 정보 검색
@@ -56,11 +57,32 @@ class SearchProduct {
     Product* searchProduct(string);
 };
 
+// 4.2 상품 구매
+class BuyProduct {
+  public:
+    BuyProduct();
+    void buyProduct();
+};
+
+// 4.3 상품 구매 내역 조회
 class BuyList {
   public:
     BuyList();
-    void printBuyList();
+    BuyProductList* printBuyList();
 };
 
+// 4.4. 상품 구매만족도 평가
+class Evaluate {
+  public:
+    Evaluate();
+    string evaluateProduct(string productName, double productScore);
+};
+
+// 5.1. 판매 상품 통계
+class ShowStats {
+  public:
+    ShowStats();
+    SellProductList* printStats();
+};
 
 #endif

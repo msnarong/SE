@@ -59,13 +59,30 @@ class SearchProductUI {
 
 // 4.2 상품 구매
 class BuyProductUI {
-
+  public:
+    BuyProductUI();
+    void startInterface(BuyProduct* pBuyProduct);
 };
 
-
+// 4.3 상품 구매 내역 조회
 class BuyListUI {
   public:
-    BuyListUI(BuyList* pBuyList);
-    void selectBuyProduct(BuyList* pBuyList);
+    BuyListUI();
+    void startInterface(BuyList* pBuyList);
 };
+
+// 4.4. 상품 구매만족도 평가
+class EvaluateUI {
+  public:
+    EvaluateUI();
+    void startInterface(Evaluate* pEvaluate);
+};
+
+// 5.1. 판매 상품 통계
+class ShowStatsUI {
+  public:
+    ShowStatsUI();
+    void startInterface(ShowStats* pShowStats);
+};
+
 #endif

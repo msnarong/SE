@@ -4,7 +4,14 @@ ifstream fin(INPUT_FILE_NAME);
 ofstream fout(OUTPUT_FILE_NAME);
 
 // Member
-string Member::deleteMem()
+Member::Member(string uName, int uNumber, string uID, string uPassword) {
+	userName = uName;
+	userNumber = uNumber;
+	userID = uID;
+	userPassword = uPassword;
+}
+
+/*string Member::deleteMem()
 {
   string deleteID;
 
@@ -12,23 +19,51 @@ string Member::deleteMem()
   currentUser = NULL;
 
   return deleteID;
+}*/
+string Member::deleteMem() {
+  string deleteID;
+
+	for (int n = 0; n < MAX_MEMBER_NUM; n++) {
+		if (currentUser == memberList[n])
+      deleteID = memberList[n]->userID;
+			memberList[n] = NULL;
+	}
+	currentUser = NULL;
+  return deleteID;
 }
 
-bool Member::checkIDandPW(string userID, string userPassword)
+/*bool Member::checkIDandPW(string userID, string userPassword)
 {
   if ((getUserID() == userID) && (getUserPassword() == userPassword))
     return true;
   else
     return false;
+}*/
+bool Member::checkIDandPW(string userID, string userPW) {
+	for (int n = 0; n < MAX_MEMBER_NUM; n++) {
+		int a = 0; int b = 0;
+		a = userID.compare(memberList[n]); 
+		b= userPW.compare(memberList[n]);
+		if (a == 0 && b == 0)
+			return true;
+	}
+	return false;
 }
 
 string Member::logoutUser()
 {
-  this->logState = false;
-  //currentUser->logState = false (?)
+  logState = false;
+  currentUser = NULL;
   return getUserID();
 }
 
+BuyProductList* Member::getBuyList() {
+	return buyList;
+}
+
+SellProductList* Member::getSellList() {
+	return sellList;
+}
 // Product
 Product::Product(string name, string company, int price, int stock)
 {
@@ -52,15 +87,16 @@ Product* Product::getProductDetails()
   return (this);
 }
 
-void Product::addBuyScore(double score)
+string Product::addBuyScore(double score)
 {
   productScore += score;
   scoreCount += 1;
 }
 
-void Product::buyProduct(int num)
+void Product::buyProduct()
 {
-  productSold += num;
+  productStock--;
+  productSold++;
 }
 
 int Product::getIncome()
@@ -68,7 +104,7 @@ int Product::getIncome()
   return (productPrice * productSold);
 }
 
-double Product::getScore()
+double Product::getProductScore()
 {
   return (productScore / scoreCount);
 }
@@ -84,11 +120,11 @@ Product* ProductList::searchProduct(string productName)
   int i = 0;
   while(productList[i])
   {
-    if (productList[i]->productName == productName)
+    if (productList[i]->getProductName() == productName)
     {
       return productList[i];
-      i++
     }
+    i++;
   }
 }
 
@@ -97,19 +133,12 @@ SellProductList::SellProductList() {
     //productList = null;
 }
 
-void SellProductList::showSoldProduct() {
-    int i;
-    for(i=0; i < sellCount; i++) {
-        if(productList[i]->getProductStock() == 0)
-            productList[i]->getProductDetails();    // 판매 완료 상품 목록 출력  
-    }
+Product* SellProductList::showSoldProduct(int index) {
+    return productList[index]->getProductDetails();
 }
 
-Product* SellProductList::showSellProductList(int index) {
-    /*int i;
-    for(i=0; i < sellCount; i++) {
-        productList[i]->getProductDetails();    // 판매 물품 배열 순회 -> 출력
-    }*/
+Product* SellProductList::showSellProductList(int index) 
+{
     return productList[index]->getProductDetails();
 }
 
@@ -120,34 +149,27 @@ void SellProductList::addNewProduct(string productName, string productCompany, i
     // 전체 product 배열에도 추가 
 }
 
-void SellProductList::showProductStatistics() {
-    int i = 0;
-    for(i; i < sellCount; i++) {
-        cout << productList[i]->getIncome(); // file write
-        cout << productList[i]->getScore(); // file write
-    }
+string SellProductList::showProductStatistics(int index) {
+    return (productList[index]->getProductName() + " " + to_string(productList[index]->getIncome()) + " " + to_string(productList[index]->getProductScore()));
 }
 
 BuyProductList::BuyProductList() {
     //productList = null;
 }
 
-void BuyProductList::addBuyProduct(Product * currentproduct) {
-    productList[buyCount++] = currentproduct;   // 구매 목록 배열 삽입
-    currentproduct->buyProduct();   // 구매하는 상품 정보 업데이트
+void BuyProductList::addBuyProduct() {
+    productList[buyCount++] = currentProduct;   // 구매 목록 배열 삽입
+    currentProduct->buyProduct();   // 구매하는 상품 정보 업데이트
 }
 
-void BuyProductList::showBuyProductList()
+Product* BuyProductList::showBuyProductList(int index)
 {
-  int i;
-  for(i=0; i < buyCount; i++) {
-    productList[i]->getProductDetails();   // 구매한 상품 목록 정보 출력
-  }
+  return productList[index]->getProductDetails();
 }
 
-void BuyProductList::evaluateProduct(string productName, int productScore) {
-     Product * productToevaluate = findProduct(productName);    // 상품명으로 상품 포인터 찾기
-     productToevaluate->addBuyScore(productScore);  // 찾은 상품 평가
+string BuyProductList::evaluateProduct(string productName, int productScore) {
+    Product * productToevaluate = findProduct(productName);    // 상품명으로 상품 포인터 찾기
+    return productToevaluate->addBuyScore(productScore);  // 찾은 상품 평가
 }
 
 Product* BuyProductList::findProduct(string productName) { // 구매한 상품 순회하면서 상품명으로 상품 찾기

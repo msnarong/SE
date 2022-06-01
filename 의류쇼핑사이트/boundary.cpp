@@ -96,6 +96,22 @@ void CheckSellProductUI::startInterface(CheckSellProduct* pCheckSellProduct)
 // 3.3 판매 완료 상품 조회
 CheckSoldProductUI::CheckSoldProductUI() {}
 
+void CheckSoldProductUI::startInterface(CheckSoldProduct* pCheckSoldProduct)
+{
+  int sellCount = pCheckSoldProduct->showSoldProduct()->getSellCount();
+
+  fout << "3.3. 판매 완료 상품 조회" << endl;
+  int productStock;
+  for (int i=0; i < sellCount; i++)
+  {
+    productStock = pCheckSoldProduct->showSoldProduct()->showSellProductList(i)->getProductStock();
+    if (productStock == 0)
+    {
+      fout << "> " << pCheckSoldProduct->showSoldProduct()->showSellProductList(i)->getProductName() << " " << pCheckSoldProduct->showSoldProduct()->showSellProductList(i)->getProductCompany() << " " << pCheckSoldProduct->showSoldProduct()->showSellProductList(i)->getProductPrice() << " " << pCheckSoldProduct->showSoldProduct()->showSellProductList(i)->getProductSold() << " " << pCheckSoldProduct->showSoldProduct()->showSellProductList(i)->getProductScore() << endl;
+    }
+  }
+}
+
 // 4.1 상품 정보 검색
 SearchProductUI::SearchProductUI() {}
 
@@ -106,16 +122,63 @@ void SearchProductUI::startInterface(SearchProduct* pSearchProduct)
   fin >> productName;
 
   fout << "4.1. 상품 정보 검색" << endl;
-  fout << "> " << pSearchProduct->searchProduct(productName)->getProductName() << " " << pSearchProduct->searchProduct(productName)->getProductCompany() << endl; 
+  fout << "> " << pSearchProduct->searchProduct(productName)->getSellerID() << " " << pSearchProduct->searchProduct(productName)->getProductName() << " " << pSearchProduct->searchProduct(productName)->getProductCompany() << " " << pSearchProduct->searchProduct(productName)->getProductPrice() << " " << pSearchProduct->searchProduct(productName)->getProductStock() << " " << pSearchProduct->searchProduct(productName)->getProductScore() << endl;
 
 }
 
-BuyListUI::BuyListUI(BuyList* pBuyList)
+// 4.2 상품 구매
+BuyProductUI::BuyProductUI() {}
+
+void BuyProductUI::startInterface(BuyProduct* pBuyProduct)
 {
-  selectBuyProduct(pBuyList);
+  pBuyProduct->buyProduct();
+  fout << "4.2. 상품 구매" << endl;
+  fout << "> " << currentProduct->getSellerID() << " " << currentProduct->getProductName() << endl;
 }
 
-void BuyListUI::selectBuyProduct(BuyList* pBuyList)
+// 4.3 상품 구매 내역 조회
+BuyListUI::BuyListUI() {}
+
+void BuyListUI::startInterface(BuyList* pBuyList)
 {
-  pBuyList->printBuyList();
+  int buyCount = pBuyList->printBuyList()->getBuyCount();
+
+  fout << "4.3. 상품 구매 내역 조회" << endl;
+  for (int i=0; i < buyCount; i++)
+  {
+    fout << "> " << pBuyList->printBuyList()->showBuyProductList(i)->getProductName() << endl;
+  }
+}
+
+// 4.4. 상품 구매만족도 평가
+EvaluateUI::EvaluateUI() {}
+
+void EvaluateUI::startInterface(Evaluate* pEvaluate) 
+{
+    string productName;
+    double productScore;
+    fin >> productName >> productScore;
+    
+    string sellerID = pEvaluate->evaluateProduct(productName, productScore); // 상품만족도 평가 정보 추가 후 판매자ID 받아오기
+    fout << "4.4. 상품 구매만족도 평가" << endl;
+    fout << "> " << sellerID << " " << productName << " " << productScore;  // 파일 입력
+}
+
+// 5.1. 판매 상품 통계
+ShowStatsUI::ShowStatsUI() {}
+
+void ShowStatsUI::startInterface(ShowStats* pShowStats) 
+{
+    
+    fout << "5.1. 판매 상품 통계" << endl;
+    
+    SellProductList* userSellProductList = pShowStats->printStats();
+    int sellCount = userSellProductList->getSellCount();
+    int i = 0;
+    string productStatistics; // 상품명 + 상품 판매 총액 + 평균 구매만족도
+    for(i; i < sellCount; i++) {
+        productStatistics = userSellProductList->showProductStatistics(i);
+        fout << "> " << productStatistics;  // 파일 입력
+    
+    }
 }
