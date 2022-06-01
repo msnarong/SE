@@ -2,8 +2,8 @@
 #include "control.h"
 #include "boundary.h"
 
-ifstream fin(INPUT_FILE_NAME);
-ofstream fout(OUTPUT_FILE_NAME);
+static ifstream fin(INPUT_FILE_NAME);
+static ofstream fout(OUTPUT_FILE_NAME);
 
 // 1.1 회원가입
 SignUpUI::SignUpUI() {}

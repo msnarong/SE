@@ -2,8 +2,11 @@
 #include "control.h"
 #include "boundary.h"
 
+
 ifstream fin(INPUT_FILE_NAME);
 ofstream fout(OUTPUT_FILE_NAME);
+
+void doTask();
 
 int main()
 {
@@ -123,7 +126,7 @@ void doTask()
         {
           case 1:   // "6.1. 종료“ 메뉴 부분
           {
-            program_exit();
+            //program_exit();
             is_program_exit = 1;
             break;
           }
@@ -134,7 +137,7 @@ void doTask()
   return;
 } // end doTask()
 
-
+/*
 void addMember()
 {
   char userID[MAX_STRING], userPassword[MAX_STRING], userName[MAX_STRING];
@@ -150,7 +153,7 @@ void addMember()
    fout << "1.1. 회원가입" << endl;
    fout << userName << " " << userNumber << " " << userID << " " << userPassword << endl;
 }
-
+*/
 
 void program_exit()
 {

@@ -31,7 +31,16 @@ DeleteAccount::DeleteAccount()
 
 string DeleteAccount::deleteMem()
 {
-    return currentUser->deleteMem(); 
+  string deleteID;
+
+  for (int n = 0; n < MAX_MEMBER_NUM; n++) {
+		if (currentUser == memberList[n])
+      deleteID = memberList[n]->getUserID();
+			memberList[n] = NULL;
+	}
+	currentUser = NULL;
+  return deleteID;
+  //return currentUser->deleteMem(); 
 }
 // delete control
 
@@ -49,8 +58,8 @@ bool Login::checkAccount(string userID, string userPassword)
   {
     if(memberList[i]->checkIDandPW(userID, userPassword))
     {
-      currentUser = &memberList[i];
-      currentUser->logState = true;
+      currentUser = memberList[i];
+      //currentUser->logState = true;
       return true;  // 로그인 성공
     }
   }
@@ -67,7 +76,11 @@ Logout::Logout()
 
 string Logout::userLogout()
 {
-    return currentUser->logoutUser();
+  string userID;
+  userID = currentUser->logoutUser();
+  currentUser = NULL;
+  return userID;
+  //return currentUser->logoutUser();
 }
 // logout control
 
@@ -116,7 +129,7 @@ SearchProduct::SearchProduct()
 
 Product* SearchProduct::searchProduct(string productName)
 {
-  currentProduct = &(allProduct->searchProduct(productName));
+  currentProduct = allProduct->searchProduct(productName);
   return currentProduct;
 };
 

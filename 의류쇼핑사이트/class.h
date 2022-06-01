@@ -14,10 +14,11 @@ using namespace std;
 #define MAX_MEMBER_NUM 50
 #define MAX_PRODUCT_NUM 100
 
-Member* memberList[MAX_MEMBER_NUM];
-Member* currentUser;
-Product* currentProduct = NULL; // 회원 상품 정보 검색한 상품
-ProductList* allProduct;
+class Member;
+class Product;
+class ProductList;
+class SellProductList;
+class BuyProductList;
 
 class Member {
   private:
@@ -30,18 +31,16 @@ class Member {
     SellProductList* sellList;  // 판매 목록 포인터
     
     void setUserID(string);
-    string getUserID();
-    
     void setUserNumber(int);
     int getUserNumber();
-    
     void setUserPassword(string);
     string getUserPassword();
-    
     void setUserName(string);
     string getUserName();
   public:
     Member(string, int, string, string); // 생성자
+    string getUserID();
+    void setLogState(bool);
     //void addMember(Member);
     bool checkIDandPW(string, string); // 로그인 (id, pw)
     string deleteMem();          // 회원탈퇴 
@@ -112,5 +111,10 @@ class BuyProductList {
     Product* findProduct(string); // 이름으로 구매한 물품 찾기
     int getBuyCount();
 };
+
+static Member* memberList[MAX_MEMBER_NUM];
+static Member* currentUser;
+static Product* currentProduct = NULL; // 회원 상품 정보 검색한 상품
+static ProductList* allProduct;
 
 #endif

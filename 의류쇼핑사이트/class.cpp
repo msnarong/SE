@@ -1,7 +1,7 @@
 #include "class.h"
 
-ifstream fin(INPUT_FILE_NAME);
-ofstream fout(OUTPUT_FILE_NAME);
+static ifstream fin(INPUT_FILE_NAME);
+static ofstream fout(OUTPUT_FILE_NAME);
 
 // Member
 Member::Member(string uName, int uNumber, string uID, string uPassword) {
@@ -10,6 +10,22 @@ Member::Member(string uName, int uNumber, string uID, string uPassword) {
 	userID = uID;
 	userPassword = uPassword;
 }
+
+string Member::getUserID()
+{
+  return userID;
+}
+
+string Member::getUserPassword()
+{
+  return userPassword;
+}
+
+void Member::setLogState(bool b)
+{
+  logState = b;
+}
+
 
 /*string Member::deleteMem()
 {
@@ -20,6 +36,7 @@ Member::Member(string uName, int uNumber, string uID, string uPassword) {
 
   return deleteID;
 }*/
+/*
 string Member::deleteMem() {
   string deleteID;
 
@@ -30,7 +47,8 @@ string Member::deleteMem() {
 	}
 	currentUser = NULL;
   return deleteID;
-}
+  
+}*/
 
 /*bool Member::checkIDandPW(string userID, string userPassword)
 {
@@ -41,11 +59,15 @@ string Member::deleteMem() {
 }*/
 bool Member::checkIDandPW(string userID, string userPW) {
 	for (int n = 0; n < MAX_MEMBER_NUM; n++) {
-		int a = 0; int b = 0;
-		a = userID.compare(memberList[n]); 
-		b= userPW.compare(memberList[n]);
+		int a = 0; 
+    int b = 0;
+		a = userID.compare(getUserID()); 
+		b = userPW.compare(getUserPassword());
 		if (a == 0 && b == 0)
+    {
+      logState = true;
 			return true;
+    }
 	}
 	return false;
 }
@@ -53,7 +75,7 @@ bool Member::checkIDandPW(string userID, string userPW) {
 string Member::logoutUser()
 {
   logState = false;
-  currentUser = NULL;
+  //currentUser = NULL;
   return getUserID();
 }
 
@@ -64,6 +86,8 @@ BuyProductList* Member::getBuyList() {
 SellProductList* Member::getSellList() {
 	return sellList;
 }
+
+
 // Product
 Product::Product(string name, string company, int price, int stock)
 {
@@ -91,6 +115,7 @@ string Product::addBuyScore(double score)
 {
   productScore += score;
   scoreCount += 1;
+  return sellerID;
 }
 
 void Product::buyProduct()
@@ -114,6 +139,20 @@ string Product::getProductName()
   return (productName);
 }
 
+string Product::getProductCompany() {
+  return productCompany;
+}
+int Product::getProductPrice() {
+  return productPrice;
+}
+
+int Product::getProductSold() {
+  return productSold;
+}
+string Product::getSellerID() {
+  return sellerID;
+}
+
 //ProductList
 Product* ProductList::searchProduct(string productName)
 {
@@ -126,6 +165,7 @@ Product* ProductList::searchProduct(string productName)
     }
     i++;
   }
+  return NULL;
 }
 
 // SellProductList
@@ -151,6 +191,11 @@ void SellProductList::addNewProduct(string productName, string productCompany, i
 
 string SellProductList::showProductStatistics(int index) {
     return (productList[index]->getProductName() + " " + to_string(productList[index]->getIncome()) + " " + to_string(productList[index]->getProductScore()));
+}
+
+int SellProductList::getSellCount()
+{
+  return sellCount;
 }
 
 BuyProductList::BuyProductList() {
@@ -179,4 +224,10 @@ Product* BuyProductList::findProduct(string productName) { // 구매한 상품 �
             return productList[i];
         }
      }
+     return NULL;
+}
+
+int BuyProductList::getBuyCount()
+{
+  return buyCount;
 }
