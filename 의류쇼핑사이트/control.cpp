@@ -18,6 +18,12 @@ SignUp::SignUp()
     signupUI.startInterface(this);
 }
 
+// Function : void addNewMem(string userName, int userNumber, string userID, string userPassword)
+// Description: This is a function that add new member
+// Parameters :   string userName – newly userName
+// Parameters :   int userNumber – newly userNumber
+// Parameters :   string userID – newly userID
+// Parameters :   string userPassword – newly userPassword
 void SignUp::addNewMem(string userName, int userNumber, string userID, string userPassword)
 {
     Member* NewMem = new Member(userName, userNumber, userID, userPassword);
@@ -40,6 +46,9 @@ DeleteAccount::DeleteAccount()
     deleteUI.startInterface(this);
 }
 
+// Function : string deleteMem()
+// Description: This is a function that delete member
+// Return Value :  deleted userID value
 string DeleteAccount::deleteMem()
 {
   string deleteID;
@@ -62,6 +71,11 @@ Login::Login()
   loginUI.startInterface(this);
 }
 
+// Function : bool checkAccount(string userID, string userPassword)
+// Description: This is a function that check account
+// Parameters :   string userID – entered user ID
+// Parameters :   string userPW – entered user Password
+// Return Value :  true or false
 bool Login::checkAccount(string userID, string userPassword)
 {
   int i;
@@ -85,6 +99,9 @@ Logout::Logout()
     logoutUI.startInterface(this);
 }
 
+// Function : string userLogout()
+// Description: This is a function that logout user
+// Return Value :  userID value
 string Logout::userLogout()
 {
   string userID;
@@ -102,6 +119,12 @@ EnrollProduct::EnrollProduct()
   enrollProductUI.startInterface(this);
 }
 
+// Function : addNewProductaddNewProduct(string productName, string productCompany, int productPrice, int productStock)
+// Description: This is a function that add new product
+// Parameters :   string productName – newly product name
+// Parameters :   string productCompany – newly product company name
+// Parameters :   string productPrice – newly product price
+// Parameters :   string productStock – newly product stock
 void EnrollProduct::addNewProduct(string productName, string productCompany, int productPrice, int productStock)
 {
   Product * product = currentUser->getSellList()->addNewProduct(productName, productCompany, productPrice, productStock, currentUser->getUserID());
@@ -117,6 +140,9 @@ CheckSellProduct::CheckSellProduct()
   checkSellProductUI.startInterface(this);
 }
 
+// Function : SellProductList* checkSellList()
+// Description: This is a function that check sell product list
+// Return Value :  current user SellProductList pointer
 SellProductList* CheckSellProduct::checkSellList()
 {
   return (currentUser->getSellList());
@@ -131,6 +157,9 @@ CheckSoldProduct::CheckSoldProduct()
   checkSoldProductUI.startInterface(this);
 }
 
+// Function : SellProductList* showSoldProduct()
+// Description: This is a function that show sold product
+// Return Value :  current user SellProductList pointer
 SellProductList* CheckSoldProduct::showSoldProduct()
 {
   return (currentUser->getSellList());
@@ -145,6 +174,10 @@ SearchProduct::SearchProduct()
   searchProductUI.startInterface(this);
 }
 
+// Function : Product* searchProduct(string productName)
+// Description: This is a function that search product
+// Parameters :   string productName – product name to find
+// Return Value :  found product pointer
 Product* SearchProduct::searchProduct(string productName)
 {
   currentProduct = allProduct->searchProduct(productName);
@@ -160,6 +193,8 @@ BuyProduct::BuyProduct()
   buyProductUI.startInterface(this);
 }
 
+// Function : void buyProduct()
+// Description: This is a function that buy product
 void BuyProduct::buyProduct()
 {
   currentUser->getBuyList()->addBuyProduct();
@@ -174,6 +209,9 @@ BuyList::BuyList()
   buyListUI.startInterface(this);
 }
 
+// Function : BuyProductList* printBuyList()
+// Description: This is a function that print buy product list
+// Return Value :  current user BuyProductList pointer
 BuyProductList* BuyList::printBuyList()
 {
   return (currentUser->getBuyList());
@@ -187,6 +225,12 @@ Evaluate::Evaluate()
    EvaluateUI evaluateUI;
    evaluateUI.startInterface(this);
 }
+
+// Function : string evaluateProduct(string productName, double productScore)
+// Description: This is a function that evaluate product
+// Parameters :   string productName – product name to evaluate
+// Parameters :   double productScore – entered score
+// Return Value :  product seller ID value
 string Evaluate::evaluateProduct(string productName, double productScore)
 {
     BuyProductList* userBuyProductList = currentUser->getBuyList(); // 구매 목록 포인터 받아오기
@@ -201,6 +245,10 @@ ShowStats::ShowStats()
     ShowStatsUI showstatsUI;
     showstatsUI.startInterface(this);
 }
+
+// Function : SellProductList* printStats()
+// Description: This is a function that print product statistics
+// Return Value :  current user SellProductList pointer
 SellProductList* ShowStats::printStats()
 {
     return currentUser->getSellList();  // 판매 목록 포인터 반환

@@ -8,13 +8,16 @@ ifstream fin(INPUT_FILE_NAME);
 ofstream fout(OUTPUT_FILE_NAME);
 
 Member* memberList[MAX_MEMBER_NUM];
-Member* currentUser;
-Product* currentProduct; // 회원 상품 정보 검색한 상품
+Member* currentUser; // 현재 로그인한 유저
+Product* currentProduct; // 회원이 상품 정보 검색한 상품
 ProductList* allProduct = new ProductList();
 
 void doTask();
 void program_exit();
 
+// Function : int main()
+// Description: This is a main function
+// Return Value :  1(file error) or 0
 int main()
 {
   if (!fin | !fout)
@@ -26,6 +29,8 @@ int main()
   return 0;
 }
 
+// Function : void doTask()
+// Description: This is a function that receives input from a file and creates a corresponding control class
 void doTask()
 {
   // 메뉴 파싱을 위한 level 구분을 위한 변수
@@ -154,9 +159,11 @@ void doTask()
   return;
 } // end doTask()
 
+// Function : program_exit()
+// Description: This is a function that close the file and program exit
 void program_exit()
 {
+  fout << "6.1. 종료" << endl;
   fin.close();
   fout.close();
-  fout << "6.1. 종료" << endl;
 }

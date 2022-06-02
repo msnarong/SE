@@ -98,7 +98,7 @@ SellProductList* Member::getSellList() {
 //                int price – newly product price
 //                int stock – newly product stock
 //                string sellerID – newly product seller ID
-Product::Product(string name, string company, int price, int stock, string sellerID)
+Product::Product(string name, string company, int price, int stock, string id)
 {
   productName = name;
   productCompany = company;
@@ -107,7 +107,7 @@ Product::Product(string name, string company, int price, int stock, string selle
   productSold = 0;
   productScore = 0;
   scoreCount = 0;
-  sellerID = sellerID;
+  sellerID = id;
 }
 
 // Function : int getProductStock()
@@ -314,8 +314,8 @@ Product* BuyProductList::showBuyProductList(int index)
 // Parameters :   int productScore – entered score
 // Return Value :  product seller ID value
 string BuyProductList::evaluateProduct(string productName, int productScore) {
-    Product * productToevaluate = findProduct(productName);    // 상품명으로 상품 포인터 찾기
-    return productToevaluate->addBuyScore(productScore);  // 찾은 상품 평가
+    Product * productToEvaluate = findProduct(productName);    // 상품명으로 상품 포인터 찾기
+    return productToEvaluate->addBuyScore(productScore);  // 찾은 상품 평가
 }
 
 // Function : Product* findProduct(string productName)
