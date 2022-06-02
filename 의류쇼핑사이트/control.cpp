@@ -1,15 +1,24 @@
+// File : control.cpp
+// Description: definition of control class and member function
 #include "class.h"
 #include "control.h"
 #include "boundary.h"
 
+extern Member* memberList[MAX_MEMBER_NUM];
+extern Member* currentUser;
+extern Product* currentProduct; // 회원 상품 정보 검색한 상품
+extern ProductList* allProduct;
+
+// Constructor : SignUp()
+// Description: This is the constructor of the sign up class
 // 1.1 회원가입
-SignUp::SignUp() 
+SignUp::SignUp()
 {
     SignUpUI signupUI; // boundary class 생성
     signupUI.startInterface(this);
 }
 
-void SignUp::addNewMem(string userName, int userNumber, string userID, string userPassword) 
+void SignUp::addNewMem(string userName, int userNumber, string userID, string userPassword)
 {
     Member* NewMem = new Member(userName, userNumber, userID, userPassword);
     for(int i=0; i < MAX_MEMBER_NUM; i++)
@@ -17,11 +26,13 @@ void SignUp::addNewMem(string userName, int userNumber, string userID, string us
       if (memberList[i] == NULL)
       {
         memberList[i] = NewMem;
+        return;
       }
     }
 }
-// signup control
 
+// Constructor : DeleteAccount()
+// Description: This is the constructor of the delete account class
 // 1.2 회원탈퇴
 DeleteAccount::DeleteAccount()
 {
@@ -40,10 +51,10 @@ string DeleteAccount::deleteMem()
 	}
 	currentUser = NULL;
   return deleteID;
-  //return currentUser->deleteMem(); 
 }
-// delete control
 
+// Constructor : Login()
+// Description: This is the constructor of the login class
 // 2.1 로그인
 Login::Login()
 {
@@ -56,19 +67,19 @@ bool Login::checkAccount(string userID, string userPassword)
   int i;
   for(i=0; i < MAX_MEMBER_NUM; i++) // 전체 유저 for문 돌면서 id,pw 확인
   {
-    if(memberList[i]->checkIDandPW(userID, userPassword))
+    if(memberList[i] != NULL && memberList[i]->checkIDandPW(userID, userPassword))
     {
       currentUser = memberList[i];
-      //currentUser->logState = true;
       return true;  // 로그인 성공
     }
   }
   return false; // 로그인 실패
 }
-// login control 
 
+// Constructor : Logout()
+// Description: This is the constructor of the logout class
 // 2.2 로그아웃
-Logout::Logout() 
+Logout::Logout()
 {
     LogoutUI logoutUI;
     logoutUI.startInterface(this);
@@ -80,10 +91,10 @@ string Logout::userLogout()
   userID = currentUser->logoutUser();
   currentUser = NULL;
   return userID;
-  //return currentUser->logoutUser();
 }
-// logout control
 
+// Constructor : EnrollProduct()
+// Description: This is the constructor of the enroll product class
 // 3.1 판매 의류 등록
 EnrollProduct::EnrollProduct()
 {
@@ -93,9 +104,12 @@ EnrollProduct::EnrollProduct()
 
 void EnrollProduct::addNewProduct(string productName, string productCompany, int productPrice, int productStock)
 {
-  currentUser->getSellList()->addNewProduct(productName, productCompany, productPrice, productStock);
+  Product * product = currentUser->getSellList()->addNewProduct(productName, productCompany, productPrice, productStock, currentUser->getUserID());
+  allProduct->addNewProduct(product);
 }
 
+// Constructor : CheckSellProduct()
+// Description: This is the constructor of the check sell product class
 // 3.2 등록 상품 조회
 CheckSellProduct::CheckSellProduct()
 {
@@ -108,6 +122,8 @@ SellProductList* CheckSellProduct::checkSellList()
   return (currentUser->getSellList());
 }
 
+// Constructor : CheckSoldProduct()
+// Description: This is the constructor of the check sold product class
 // 3.3 판매 완료 상품 조회
 CheckSoldProduct::CheckSoldProduct()
 {
@@ -120,6 +136,8 @@ SellProductList* CheckSoldProduct::showSoldProduct()
   return (currentUser->getSellList());
 }
 
+// Constructor : SearchProduct()
+// Description: This is the constructor of the search product class
 // 4.1 상품 정보 검색
 SearchProduct::SearchProduct()
 {
@@ -133,6 +151,8 @@ Product* SearchProduct::searchProduct(string productName)
   return currentProduct;
 };
 
+// Constructor : BuyProduct()
+// Description: This is the constructor of the buy product class
 // 4.2 상품 구매
 BuyProduct::BuyProduct()
 {
@@ -142,9 +162,11 @@ BuyProduct::BuyProduct()
 
 void BuyProduct::buyProduct()
 {
-  currentProduct->buyProduct();
+  currentUser->getBuyList()->addBuyProduct();
 }
 
+// Constructor : BuyList()
+// Description: This is the constructor of the buy list class
 // 4.3 상품 구매 내역 조회
 BuyList::BuyList()
 {
@@ -157,6 +179,8 @@ BuyProductList* BuyList::printBuyList()
   return (currentUser->getBuyList());
 }
 
+// Constructor : Evaluate()
+// Description: This is the constructor of the evaluate class
 // 4.4. 상품 구매만족도 평가
 Evaluate::Evaluate()
 {
@@ -169,6 +193,8 @@ string Evaluate::evaluateProduct(string productName, double productScore)
     return userBuyProductList->evaluateProduct(productName, productScore);  // 상품 평가 후 판매자ID 반환
 }
 
+// Constructor : ShowStats()
+// Description: This is the constructor of the show stats class
 // 5.1. 판매 상품 통계
 ShowStats::ShowStats()
 {

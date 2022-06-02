@@ -1,27 +1,30 @@
+// File : main.cpp
+// Description: receives input from a file and creates a corresponding control class
 #include "class.h"
 #include "control.h"
 #include "boundary.h"
 
-
 ifstream fin(INPUT_FILE_NAME);
 ofstream fout(OUTPUT_FILE_NAME);
 
+Member* memberList[MAX_MEMBER_NUM];
+Member* currentUser;
+Product* currentProduct; // 회원 상품 정보 검색한 상품
+ProductList* allProduct = new ProductList();
+
 void doTask();
+void program_exit();
 
 int main()
 {
- 
   if (!fin | !fout)
   {
     cout << "file error" << endl;
     return 1;
   }
-
   doTask();
-
   return 0;
 }
-
 
 void doTask()
 {
@@ -49,9 +52,11 @@ void doTask()
           }
           case 2:   // 1.2. 회원탈퇴
           {
+            DeleteAccount deleteAccount;
             break;
           }
         }
+        break;
       }
       case 2:
       {
@@ -59,14 +64,16 @@ void doTask()
         {
           case 1:  // 2.1. 로그인
           {
-            Login Login1; //control class 생성
+            Login login; //control class 생성
             break;
           }
           case 2:  // 2.2. 로그아웃
           {
+            Logout logout;
             break;
           }
         }
+        break;
       }
       case 3:
       {
@@ -74,18 +81,21 @@ void doTask()
         {
           case 1: // 3.1. 판매 의류 등록
           {
-            EnrollProduct EnrollProduct1; //control class 생성
+            EnrollProduct enrollProduct; //control class 생성
             break;
           }
           case 2: // 3.2. 등록 상품 조회
           {
+            CheckSellProduct checkSellProduct;
             break;
           }
           case 3: // 3.3 판매 완료 상품 조회
           {
+            CheckSoldProduct checkSoldProduct;
             break;
           }
         }
+        break;
       }
       case 4:
       {
@@ -98,17 +108,21 @@ void doTask()
           }
           case 2: // 4.2. 상품 구매
           {
+            BuyProduct buyProduct;
             break;
           }
           case 3: // 4.3. 상품 구매 내역 조회
           {
+            BuyList buyList;
             break;
           }
           case 4: // 4.4. 상품 구매만족도 평가
           {
+            Evaluate evaluate;
             break;
           }
         }
+        break;
       }
       case 5:
       {
@@ -116,9 +130,11 @@ void doTask()
         {
           case 1: // 5.1. 판매 상품 통계
           {
+            ShowStats showStats;
             break;
           }
         }
+        break;
       }
       case 6:
       {
@@ -126,36 +142,21 @@ void doTask()
         {
           case 1:   // "6.1. 종료“ 메뉴 부분
           {
-            //program_exit();
+            program_exit();
             is_program_exit = 1;
             break;
           }
         }
+        break;
       }
    } // end switch
   } // end while
   return;
 } // end doTask()
 
-/*
-void addMember()
-{
-  char userID[MAX_STRING], userPassword[MAX_STRING], userName[MAX_STRING];
-  int userNumber;
-
-   // 입력 형식 : 이름, 주민번호, ID, Password를 파일로부터 읽음
-   fin >> userName;
-   fin >> userNumber;
-   fin >> userID;
-   fin >> userPassword;
-
-   // 출력 형식
-   fout << "1.1. 회원가입" << endl;
-   fout << userName << " " << userNumber << " " << userID << " " << userPassword << endl;
-}
-*/
-
 void program_exit()
 {
-
+  fin.close();
+  fout.close();
+  fout << "6.1. 종료" << endl;
 }

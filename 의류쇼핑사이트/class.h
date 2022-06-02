@@ -1,9 +1,13 @@
+// File : class.h
+// Description: declaration of header, constant and class
 #ifndef CLASS_H
 #define CLASS_H
 
 // 헤더 선언
 #include <iostream>
 #include <fstream>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
 // 상수 선언
@@ -20,6 +24,10 @@ class ProductList;
 class SellProductList;
 class BuyProductList;
 
+// Class : Member
+// Description: This is a member class.
+// It contains member information
+// entity class
 class Member {
   private:
     string userID;
@@ -29,7 +37,6 @@ class Member {
     bool logState;              // 로그인 상태
     BuyProductList* buyList;    // 구매 목록 포인터
     SellProductList* sellList;  // 판매 목록 포인터
-    
     void setUserID(string);
     void setUserNumber(int);
     int getUserNumber();
@@ -41,15 +48,17 @@ class Member {
     Member(string, int, string, string); // 생성자
     string getUserID();
     void setLogState(bool);
-    //void addMember(Member);
     bool checkIDandPW(string, string); // 로그인 (id, pw)
-    string deleteMem();          // 회원탈퇴 
+    string deleteMem();          // 회원탈퇴
     string logoutUser();              // 로그아웃
-    BuyProductList* getBuyList();   // 구매목록 
+    BuyProductList* getBuyList();   // 구매목록
     SellProductList* getSellList(); // 판매목록
-    
 };
 
+// Class : Product
+// Description: This is a product class.
+// It contains product information
+// entity class
 class Product {
   private:
     string productName;
@@ -61,29 +70,37 @@ class Product {
     int scoreCount;         // 평가 수
     string sellerID;
   public:
-    Product(string, string, int, int); // 생성자
+    Product(string, string, int, int, string); // 생성자
     int getProductStock();
     Product* getProductDetails();   // 물품 상세 정보 출력
-    //void createNewProduct();    // 새 물품추가 # 생성자로 대신 
     string addBuyScore(double);   // 물품 평가 (평점) 판매자명 반환
     void buyProduct();       // 물품 구매 (구매 수량)
-    int getIncome();            // 물품 총판매금액 반환 
-    double getProductScore();          // 물품 평점 반환 
+    int getIncome();            // 물품 총판매금액 반환
+    double getProductScore();          // 물품 평점 반환
     string getProductName(); // 상품명 반환
     string getProductCompany();
     int getProductPrice();
     int getProductSold();
     string getSellerID();
-
 };
 
+// Class : ProductList
+// Description: This is a product list class.
+// It contains product's reference array.
+// entity class
 class ProductList {
   private:
     Product* productList[MAX_PRODUCT_NUM];
+    int productCount = 0;
   public:
     Product* searchProduct(string);
+    void addNewProduct(Product*);
 };
 
+// Class : SellProductList
+// Description: This is a sell product list class.
+// It contains sell product's reference array.
+// entity class
 class SellProductList {
   private:
     Product* productList[MAX_PRODUCT_NUM];
@@ -91,14 +108,16 @@ class SellProductList {
   public:
     SellProductList();
     Product* showSoldProduct(int index);     // 판매 완료 목록 출력
-    //int getTotalIncome();       // 총 판매액 출력
-    //double getScoreAvg();       // 평균 구매만족도 출력
     Product* showSellProductList(int index); // 판매 물품 목록 출력
-    void addNewProduct(string, string, int, int);       // 판매 물품 등록
+    Product* addNewProduct(string, string, int, int, string);       // 판매 물품 등록
     int getSellCount(); // sellCount return
     string showProductStatistics(int index);
 };
 
+// Class : BuyProductList
+// Description: This is a buy product list class.
+// It contains buy product's reference array.
+// entity class
 class BuyProductList {
   private:
     Product* productList[MAX_PRODUCT_NUM];
@@ -111,10 +130,5 @@ class BuyProductList {
     Product* findProduct(string); // 이름으로 구매한 물품 찾기
     int getBuyCount();
 };
-
-static Member* memberList[MAX_MEMBER_NUM];
-static Member* currentUser;
-static Product* currentProduct = NULL; // 회원 상품 정보 검색한 상품
-static ProductList* allProduct;
 
 #endif
